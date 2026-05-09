@@ -6,7 +6,6 @@ import me.spectral8420.petPickup.compatibility.WorldGuardCompatibility;
 import me.spectral8420.petPickup.misc.Lang;
 import me.spectral8420.petPickup.misc.Settings;
 import me.spectral8420.petPickup.misc.ToggleTracker;
-import me.spectral8420.petPickup.util.ConsoleHelper;
 import me.spectral8420.petPickup.util.EggHelper;
 import org.bukkit.Location;
 import org.bukkit.NamespacedKey;
@@ -53,13 +52,13 @@ public class MainListener implements Listener {
         Entity entity = event.getRightClicked();
 
         if(CompatibilityChecks.isWorldGuardPluginInstalled()) {
-            if(!WorldGuardCompatibility.checkWorldGuard(entity.getLocation()) && !player.hasPermission("petpickup.bypass.worldguard")) {
+            if(!WorldGuardCompatibility.checkWorldGuard(entity.getLocation()) && !player.hasPermission("pp.bypass.worldguard")) {
                 player.sendMessage(Lang.getMessage("noPermissionPickup", true));
                 return;
             }
         }
 
-        if(!Settings.isEntityTypeWhitelisted(entity.getType()) && !player.hasPermission("petpickup.bypass.whitelist")) {
+        if(!Settings.isEntityTypeWhitelisted(entity.getType()) && !player.hasPermission("pp.bypass.whitelist")) {
             player.sendMessage(Lang.getMessage("entityNotWhitelisted", true));
             return;
         }
@@ -70,7 +69,7 @@ public class MainListener implements Listener {
             if(tamer != null) {
                 UUID owner = tamer.getUniqueId();
 
-                if(!player.getUniqueId().equals(owner) && !player.hasPermission("petpickup.bypass.pickup")) {
+                if(!player.getUniqueId().equals(owner) && !player.hasPermission("pp.bypass.pickup")) {
                     player.sendMessage(Lang.getMessage("notOwnerPickup", true));
                     event.setCancelled(true);
 
