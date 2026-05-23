@@ -1,8 +1,8 @@
 name: PetPickup
-version: '1.0-SNAPSHOT'
+version: '1.1-SNAPSHOT'
 main: me.spectral8420.petPickup.PetPickup
 api-version: '1.21'
-authors: [ ____Spectral)____ ]
+authors: [ ____Spectral____ ]
 description: A fun minigame for Minecraft!
 
 commands:
