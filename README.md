@@ -6,7 +6,7 @@ A small plugin that lets you pickup your pets into spawn eggs.
 
 # Installation
 - You can find the pre-built binary at https://github.com/Cvahotni/PetPickup/releases
-- Currently supports PaperMC versions 1.21+.
+- Currently supports Spigot and Paper versions 1.21+.
 
 # Building
 - Clone the repository to your folder
