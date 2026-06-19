@@ -1,3 +1,17 @@
+#For most cases it's okay to keep this as NBT, but if you have other plugins that interfere with NBT, then you should change this.
+#Possible options include, NBT, and REDIS.
+#If you do choose REDIS, please use it AT YOUR OWN RISK. It is currently experimental and unexpected bugs may be present!
+databaseType: "NBT"
+
+#If you're using anything other than NBT, change this to point to your database.
+databaseIP: "127.0.0.1"
+databasePort: "6379"
+
+#Likewise, if your database requires authentication, you should put its credentials here.
+databaseName: "my_cool_database_here"
+databasePassword: "use_a_good_password_please_1234"
+
+#Allowed entity types to use with the plugin, see https://hub.spigotmc.org/javadocs/spigot/org/bukkit/entity/EntityType.html for a list.
 whitelistedTypes:
   - "ARMADILLO"
   - "AXOLOTL"

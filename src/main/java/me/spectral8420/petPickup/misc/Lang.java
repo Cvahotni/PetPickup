@@ -22,6 +22,8 @@ public class Lang {
         addMessage("notOwnerRide", langConfig);
         addMessage("entityNotWhitelisted", langConfig);
         addMessage("notPlayer", langConfig);
+        addMessage("pickupFail", langConfig);
+        addMessage("placeFail", langConfig);
     }
 
     public static void addMessage(String key, CustomConfig config) {

@@ -3,13 +3,13 @@ package me.spectral8420.petPickup.event;
 import me.spectral8420.petPickup.PetPickup;
 import me.spectral8420.petPickup.compatibility.CompatibilityChecks;
 import me.spectral8420.petPickup.compatibility.WorldGuardCompatibility;
+import me.spectral8420.petPickup.database.RedisDatabase;
 import me.spectral8420.petPickup.misc.Lang;
 import me.spectral8420.petPickup.misc.Settings;
 import me.spectral8420.petPickup.misc.ToggleTracker;
+import me.spectral8420.petPickup.util.ConsoleHelper;
 import me.spectral8420.petPickup.util.EggHelper;
-import org.bukkit.Location;
-import org.bukkit.NamespacedKey;
-import org.bukkit.World;
+import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
@@ -22,6 +22,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SpawnEggMeta;
+import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 
 import java.util.UUID;
@@ -82,7 +83,15 @@ public class MainListener implements Listener {
             return;
         }
 
-        ItemStack egg = EggHelper.captureEntityToEgg(entity);
+        ItemStack egg = EggHelper.captureEntityToEgg(entity, plugin);
+
+        if(egg.getType() == Material.AIR) {
+            player.sendMessage(Lang.getMessage("pickupFail", true));
+            event.setCancelled(true);
+
+            return;
+        }
+
         ItemMeta meta = egg.getItemMeta();
 
         if(meta == null) {
@@ -164,9 +173,42 @@ public class MainListener implements Listener {
         }
 
         World world = clickedBlock.getWorld();
-        EntitySnapshot snapshot = spawnEggMeta.getSpawnedEntity();
+        EntitySnapshot snapshot = null;
+
+        String redisKey = "";
+
+        switch (Settings.getDatabaseType()) {
+            case NBT -> snapshot = spawnEggMeta.getSpawnedEntity();
+
+            case REDIS -> {
+                PersistentDataContainer container = meta.getPersistentDataContainer();
+                NamespacedKey uuidKey = new NamespacedKey(plugin, "databaseUUID");
+
+                if(container.has(uuidKey, PersistentDataType.STRING)) {
+                    redisKey = container.get(uuidKey, PersistentDataType.STRING);
+                }
+
+                String redisString = RedisDatabase.getString(redisKey);
+
+                if(redisString != null) {
+                    if(!redisString.isEmpty()) {
+                        try {
+                            EntityFactory factory = Bukkit.getEntityFactory();
+                            snapshot = factory.createEntitySnapshot(redisString);
+                        }
+
+                        catch (Exception e) {
+                            ConsoleHelper.sendMessage(ChatColor.RED + "Failed to convert entity database string to entity snapshot: " + e);
+                        }
+                    }
+                }
+            }
+        }
 
         if(snapshot == null) {
+            player.sendMessage(Lang.getMessage("placeFail", true));
+            event.setCancelled(true);
+
             return;
         }
 
@@ -192,9 +234,20 @@ public class MainListener implements Listener {
         spawnLocation.add(0.5, 0.5, 0.5);
         spawnLocation.add(event.getBlockFace().getDirection());
 
-        event.getItem().subtract(1);
+        switch(Settings.getDatabaseType()) {
+            case REDIS -> {
+                if(!RedisDatabase.deleteKey(redisKey)) {
+                    ConsoleHelper.sendMessage(Lang.getMessage("placeFail", true));
+                    event.setCancelled(true);
 
+                    return;
+                }
+            }
+        }
+
+        event.getItem().subtract(1);
         entity.spawnAt(spawnLocation);
+
         event.setCancelled(true);
     }
 }

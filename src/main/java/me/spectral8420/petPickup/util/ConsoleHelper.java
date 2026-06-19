@@ -4,8 +4,10 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.ConsoleCommandSender;
 
 public class ConsoleHelper {
+    private static final String prefix = "[PetPickup] ";
+
     public static void sendMessage(String message) {
         ConsoleCommandSender sender = Bukkit.getConsoleSender();
-        sender.sendMessage(message);
+        sender.sendMessage(prefix + message);
     }
 }

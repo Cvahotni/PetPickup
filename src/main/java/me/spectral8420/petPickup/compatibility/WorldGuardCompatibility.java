@@ -68,7 +68,7 @@ public class WorldGuardCompatibility {
             WorldGuardCompatibility.setPetPickup(flag);
         }
 
-        catch(FlagConflictException e) {
+        catch(Exception e) {
             Flag<?> existing = registry.get("pet-pickup");
 
             if(existing instanceof StateFlag) {
