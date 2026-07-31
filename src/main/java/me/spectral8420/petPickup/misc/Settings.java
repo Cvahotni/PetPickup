@@ -20,6 +20,8 @@ public class Settings {
     private static String databaseName = "";
     private static String databasePassword = "";
 
+    private static boolean mythicMobsPatch = true;
+
     public static void getData() {
         CustomConfig settingsConfig = CustomConfigManager.getConfig("settings");
 
@@ -82,6 +84,16 @@ public class Settings {
         catch (Exception e) {
             ConsoleHelper.sendMessage(ChatColor.RED + "Unable to load databasePassword from settings due to an exception: " + e);
         }
+
+        try {
+            if(settingsConfig.has("mythicMobsPatch")) {
+                mythicMobsPatch = (Boolean) settingsConfig.get("mythicMobsPatch");
+            }
+        }
+
+        catch (Exception e) {
+            ConsoleHelper.sendMessage(ChatColor.RED + "Unable to load mythicMobsPatch from settings due to an exception: " + e);
+        }
     }
 
     public static boolean isEntityTypeWhitelisted(EntityType type) {
@@ -106,5 +118,9 @@ public class Settings {
 
     public static String getDatabasePassword() {
         return databasePassword;
+    }
+
+    public static boolean isMythicMobsPatch() {
+        return mythicMobsPatch;
     }
 }

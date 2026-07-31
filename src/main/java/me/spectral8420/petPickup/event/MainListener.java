@@ -11,6 +11,7 @@ import me.spectral8420.petPickup.util.ConsoleHelper;
 import me.spectral8420.petPickup.util.EggHelper;
 import org.bukkit.*;
 import org.bukkit.block.Block;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -145,11 +146,33 @@ public class MainListener implements Listener {
         }
 
         Player player = event.getPlayer();
-
         Block clickedBlock = event.getClickedBlock();
 
         if(clickedBlock == null) {
             return;
+        }
+
+        ItemStack egg = event.getItem();
+
+        if(egg == null) {
+            return;
+        }
+
+        ItemMeta meta = egg.getItemMeta();
+
+        if(meta == null) {
+            return;
+        }
+
+        if(Settings.isMythicMobsPatch()) {
+            if(meta.hasEnchant(Enchantment.UNBREAKING)) {
+                int level = meta.getEnchantLevel(Enchantment.UNBREAKING);
+                int maxLevel = 3;
+
+                if(level > maxLevel) {
+                    return;
+                }
+            }
         }
 
         if(CompatibilityChecks.isWorldGuardPluginInstalled()) {
@@ -160,9 +183,6 @@ public class MainListener implements Listener {
                 return;
             }
         }
-
-        ItemStack egg = event.getItem();
-        ItemMeta meta = egg.getItemMeta();
 
         if(meta == null) {
             return;
