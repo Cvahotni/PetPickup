@@ -3,6 +3,10 @@ A small plugin that lets you pickup your pets into spawn eggs.
 
 # Demonstration
 - https://www.youtube.com/watch?v=Dh2Ig2oR184
+- https://www.youtube.com/watch?v=p1ndkjIxoxk
+- https://www.youtube.com/watch?v=NlG1TfSIy90
+- https://www.youtube.com/watch?v=V9a0qQPVMDw
+- https://www.youtube.com/watch?v=bNqFB9mJe3k
 
 # Installation
 - You can find the pre-built binary at https://github.com/Cvahotni/PetPickup/releases
@@ -19,3 +23,5 @@ A small plugin that lets you pickup your pets into spawn eggs.
 - pp.bypass.worldguard - Bypass WorldGuard restrictions.
 - pp.bypass.whitelist - Bypass the entity type whitelist.
 - pp.bypass.pickup - Bypass pet ownership protections.
+- pp.rename - Use the /pprename command.
+- pp.renamelegacy - Use the /pprenamelegacy command.
