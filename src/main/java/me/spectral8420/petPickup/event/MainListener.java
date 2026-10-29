@@ -225,12 +225,16 @@ public class MainListener implements Listener {
             }
         }
 
-        if(snapshot == null) {
+        //TODO: Figure this out more later.
+        //Commenting this out for the time being, to allow the player to place spawn eggs like usual, that don't have any pet pickup data in them.
+
+        /*if(snapshot == null) {
             player.sendMessage(Lang.getMessage("placeFail", true));
             event.setCancelled(true);
 
             return;
         }
+        */
 
         NamespacedKey currentNameKey = new NamespacedKey(plugin, nameKey);
         NamespacedKey currentNameVisibleKey = new NamespacedKey(plugin, nameVisibleKey);

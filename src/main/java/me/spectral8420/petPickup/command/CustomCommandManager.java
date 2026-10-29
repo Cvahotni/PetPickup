@@ -13,6 +13,8 @@ public class CustomCommandManager {
 
     public static void registerAllCommands(PetPickup plugin) {
         registerCommand(plugin, new PetPickupCommand());
+        registerCommand(plugin, new RenameCommand());
+        registerCommand(plugin, new LegacyRenameCommand());
     }
 
     public static void registerCommand(PetPickup plugin, CustomCommand command) {

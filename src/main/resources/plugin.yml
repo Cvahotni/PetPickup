@@ -1,11 +1,17 @@
 name: PetPickup
-version: '1.3-SNAPSHOT'
+version: '1.4-SNAPSHOT'
 main: me.spectral8420.petPickup.PetPickup
 api-version: '1.21'
 authors: [ ____Spectral____ ]
-description: A fun minigame for Minecraft!
+description: A small and fun plugin designed to allow people to transport the pets more easily!
 
 commands:
   pp:
     description: "Toggle pet pickup"
     permission: "pp.toggle"
+  pprename:
+    description: "Rename a pet"
+    permission: "pp.rename"
+  pprenamelegacy:
+    description: "Rename a pet via chat for older versions"
+    permission: "pp.renamelegacy"

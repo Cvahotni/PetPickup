@@ -11,6 +11,12 @@ databasePort: "6379"
 databaseName: "my_cool_database_here"
 databasePassword: "use_a_good_password_please_1234"
 
+#What is the maximum allowed character limit that a pet's name can be renamed to?
+maxRenameLength: 32
+
+#Should the legacy rename functionality be used automatically for /pprename if dialogs aren't supported?
+swapToLegacyWhenNeeded: true
+
 #Patches for compatibility will be here, this one is related to the spawn eggs of the MythicMobs plugin
 mythicMobsPatch: true
 

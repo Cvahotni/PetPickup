@@ -20,7 +20,12 @@ public class Settings {
     private static String databaseName = "";
     private static String databasePassword = "";
 
+    private static int maxRenameLength = 32;
+
+    private static boolean swapToLegacyWhenNeeded = true;
     private static boolean mythicMobsPatch = true;
+
+    private static boolean shouldNotifyOnSaveNow = false;
 
     public static void getData() {
         CustomConfig settingsConfig = CustomConfigManager.getConfig("settings");
@@ -86,6 +91,26 @@ public class Settings {
         }
 
         try {
+            if(settingsConfig.has("maxRenameLength")) {
+                maxRenameLength = settingsConfig.getInt("maxRenameLength");
+            }
+        }
+
+        catch (Exception e) {
+            ConsoleHelper.sendMessage(ChatColor.RED + "Unable to load maxRenameLength from settings due to an exception: " + e);
+        }
+
+        try {
+            if(settingsConfig.has("swapToLegacyWhenNeeded")) {
+                swapToLegacyWhenNeeded = (Boolean) settingsConfig.get("swapToLegacyWhenNeeded");
+            }
+        }
+
+        catch (Exception e) {
+            ConsoleHelper.sendMessage(ChatColor.RED + "Unable to load swapToLegacyWhenNeeded from settings due to an exception: " + e);
+        }
+
+        try {
             if(settingsConfig.has("mythicMobsPatch")) {
                 mythicMobsPatch = (Boolean) settingsConfig.get("mythicMobsPatch");
             }
@@ -93,6 +118,119 @@ public class Settings {
 
         catch (Exception e) {
             ConsoleHelper.sendMessage(ChatColor.RED + "Unable to load mythicMobsPatch from settings due to an exception: " + e);
+        }
+    }
+
+    public static void setData() {
+        CustomConfig settingsConfig = CustomConfigManager.getConfig("settings");
+
+        try {
+            if(!settingsConfig.has("whitelistedTypes")) {
+                shouldNotifyOnSaveNow = true;
+                settingsConfig.set("whitelistedTypes", whitelistedTypes);
+            }
+        }
+
+        catch (Exception e) {
+            ConsoleHelper.sendMessage(ChatColor.RED + "Unable to save whitelistedTypes to settings due to an exception: " + e);
+        }
+
+        try {
+            if(!settingsConfig.has("databaseType")) {
+                shouldNotifyOnSaveNow = true;
+                settingsConfig.set("databaseType", databaseType);
+            }
+        }
+
+        catch (Exception e) {
+            ConsoleHelper.sendMessage(ChatColor.RED + "Unable to save database type to settings due to an exception: " + e);
+        }
+
+        try {
+            if(!settingsConfig.has("databaseIP")) {
+                shouldNotifyOnSaveNow = true;
+                settingsConfig.set("databaseIP", databaseIP);
+            }
+        }
+
+        catch (Exception e) {
+            ConsoleHelper.sendMessage(ChatColor.RED + "Unable to save databaseIP to settings due to an exception: " + e);
+        }
+
+        try {
+            if(!settingsConfig.has("databasePort")) {
+                shouldNotifyOnSaveNow = true;
+                settingsConfig.set("databasePort", dataBasePort);
+            }
+        }
+
+        catch (Exception e) {
+            ConsoleHelper.sendMessage(ChatColor.RED + "Unable to save databasePort to settings due to an exception: " + e);
+        }
+
+        try {
+            if(!settingsConfig.has("databaseName")) {
+                shouldNotifyOnSaveNow = true;
+                settingsConfig.set("databaseName", databaseName);
+            }
+        }
+
+        catch (Exception e) {
+            ConsoleHelper.sendMessage(ChatColor.RED + "Unable to save databaseName to settings due to an exception: " + e);
+        }
+
+        try {
+            if(!settingsConfig.has("databasePassword")) {
+                shouldNotifyOnSaveNow = true;
+                settingsConfig.set("databasePassword", databasePassword);
+            }
+        }
+
+        catch (Exception e) {
+            ConsoleHelper.sendMessage(ChatColor.RED + "Unable to save databasePassword to settings due to an exception: " + e);
+        }
+
+        try {
+            if(!settingsConfig.has("maxRenameLength")) {
+                shouldNotifyOnSaveNow = true;
+                settingsConfig.setInt("maxRenameLength", maxRenameLength);
+            }
+        }
+
+        catch (Exception e) {
+            ConsoleHelper.sendMessage(ChatColor.RED + "Unable to save maxRenameLength to settings due to an exception: " + e);
+        }
+
+        try {
+            if(!settingsConfig.has("swapToLegacyWhenNeeded")) {
+                shouldNotifyOnSaveNow = true;
+                settingsConfig.set("swapToLegacyWhenNeeded", swapToLegacyWhenNeeded);
+            }
+        }
+
+        catch (Exception e) {
+            ConsoleHelper.sendMessage(ChatColor.RED + "Unable to save swapToLegacyWhenNeeded to settings due to an exception: " + e);
+        }
+
+        try {
+            if(!settingsConfig.has("mythicMobsPatch")) {
+                shouldNotifyOnSaveNow = true;
+                settingsConfig.set("mythicMobsPatch", mythicMobsPatch);
+            }
+        }
+
+        catch (Exception e) {
+            ConsoleHelper.sendMessage(ChatColor.RED + "Unable to save mythicMobsPatch to settings due to an exception: " + e);
+        }
+
+        settingsConfig.save();
+
+        if(shouldNotifyOnSaveNow) {
+            ConsoleHelper.sendMessage(
+                    ChatColor.RED +
+                            "Some values in the settings.yml file were reset, as they were not found, or they were not loaded correctly, " +
+                            "if problems continue, you may need to delete the settings.yml manually, and try again"
+            );
         }
     }
 
@@ -118,6 +256,14 @@ public class Settings {
 
     public static String getDatabasePassword() {
         return databasePassword;
+    }
+
+    public static int getMaxRenameLength() {
+        return maxRenameLength;
+    }
+
+    public static boolean isSwapToLegacyWhenNeeded() {
+        return swapToLegacyWhenNeeded;
     }
 
     public static boolean isMythicMobsPatch() {

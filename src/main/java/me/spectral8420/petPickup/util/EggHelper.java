@@ -2,13 +2,14 @@ package me.spectral8420.petPickup.util;
 
 import me.spectral8420.petPickup.PetPickup;
 import me.spectral8420.petPickup.database.RedisDatabase;
+import me.spectral8420.petPickup.misc.Lang;
 import me.spectral8420.petPickup.misc.Settings;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.EntitySnapshot;
-import org.bukkit.entity.EntityType;
+import org.bukkit.World;
+import org.bukkit.entity.*;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SpawnEggMeta;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
@@ -17,6 +18,44 @@ import org.jetbrains.annotations.NotNull;
 import java.util.UUID;
 
 public class EggHelper {
+    public static boolean isEgg(ItemStack stack) {
+        if(stack == null) {
+            return false;
+        }
+
+        Material material = stack.getType();
+        String materialName = material.name();
+
+        return materialName.contains("SPAWN_EGG");
+    }
+
+    public static boolean renameEgg(PetPickup plugin, ItemStack heldItem, Player player, String newPetName) {
+        ItemMeta heldMeta = heldItem.getItemMeta();
+
+        if(!(heldMeta instanceof SpawnEggMeta spawnEggMeta)) {
+            player.sendMessage(Lang.getMessage("renameNotEgg", true));
+            return false;
+        }
+
+        World world = player.getWorld();
+
+        EntitySnapshot snaphot = spawnEggMeta.getSpawnedEntity();
+        Entity entityFound = snaphot.createEntity(world);
+
+        if(!(entityFound instanceof LivingEntity livingEntity)) {
+            player.sendMessage(Lang.getMessage("renameNotLiving", true));
+            return false;
+        }
+
+        livingEntity.setCustomName(newPetName);
+
+        ItemStack eggCreated = EggHelper.captureEntityToEgg(livingEntity, plugin);
+        player.setItemInHand(eggCreated);
+
+        player.sendMessage(Lang.getMessage("renameDone", true).replace("{0}", newPetName));
+        return true;
+    }
+
     public static ItemStack captureEntityToEgg(Entity entity, PetPickup plugin) {
         if(entity == null) {
             return null;

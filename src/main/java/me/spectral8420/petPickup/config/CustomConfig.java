@@ -36,6 +36,10 @@ public class CustomConfig {
         return customConfig.get(path);
     }
 
+    public int getInt(String path) {
+        return customConfig.getInt(path);
+    }
+
     public ItemStack getItem(String path) {
         if(!customConfig.isSet(path)) {
             return new ItemStack(Material.AIR);
@@ -49,6 +53,10 @@ public class CustomConfig {
     }
 
     public void set(String path, Object data) {
+        customConfig.set(path, data);
+    }
+
+    public void setInt(String path, int data) {
         customConfig.set(path, data);
     }
 
